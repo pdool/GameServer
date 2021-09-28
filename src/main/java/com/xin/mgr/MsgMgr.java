@@ -1,4 +1,4 @@
-package com.xin;
+package com.xin.mgr;
 
 import com.google.protobuf.Parser;
 import com.xin.msg.login.SimpleMessage;

@@ -1,10 +1,10 @@
 package com.xin;
 
 import com.google.protobuf.Parser;
+import com.xin.mgr.MsgMgr;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.codec.MessageToMessageDecoder;
 
 import java.util.ArrayList;
 import java.util.List;
