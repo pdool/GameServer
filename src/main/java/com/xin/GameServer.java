@@ -13,11 +13,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class GameServer {
     public static void main(String[] args) throws Exception {
-        EventLoopGroup master = new NioEventLoopGroup(1);
-        EventLoopGroup slaver = new NioEventLoopGroup();
+        EventLoopGroup boss = new NioEventLoopGroup(1);
+        EventLoopGroup worker = new NioEventLoopGroup();
         try {
             ServerBootstrap serverBootstrap = new ServerBootstrap();
-            serverBootstrap.group(master, slaver)
+            serverBootstrap.group(boss, worker)
+                    .channel(NioServerSocketChannel.class)
                     //服务端可连接队列数,对应TCP/IP协议listen函数中backlog参数
                     .option(ChannelOption.SO_BACKLOG, 1024)
                     //设置TCP长连接,一般如果两个小时内没有数据的通信时,TCP会自动发送一个活动探测数据报文
@@ -29,8 +30,8 @@ public class GameServer {
             channelFuture.channel().closeFuture().sync();
         } finally {
             // 关闭线程
-            master.shutdownGracefully();
-            slaver.shutdownGracefully();
+            boss.shutdownGracefully();
+            worker.shutdownGracefully();
         }
 
     }

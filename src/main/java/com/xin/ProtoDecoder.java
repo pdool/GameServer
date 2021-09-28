@@ -1,34 +1,34 @@
 package com.xin;
 
+import com.google.protobuf.Parser;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.MessageToMessageDecoder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProtoDecoder extends LengthFieldBasedFrameDecoder {
-    //  length (4)+ headerId(4) + content
-    private int HEADER_SIZE = 4;
 
-    //  1m，0,0,4,0,4
-    public ProtoDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength, int lengthAdjustment, int initialBytesToStrip) {
-        super(maxFrameLength, lengthFieldOffset, lengthFieldLength, lengthAdjustment, initialBytesToStrip);
+
+    public ProtoDecoder() {
+        super(1024*1024, 0, 4,0,4);
     }
 
     @Override
-    protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
-        if (in == null) {
-            return null;
-        }
-        if (in.readableBytes() < HEADER_SIZE) {
-            throw new Exception("可读信息段比头部信息都小，你在逗我？");
-        }
-
-        //注意在读的过程中，readIndex的指针也在移动
-        int headId =  in.readInt();
-        ByteBuf buf = in.readBytes(in.readableBytes());
-        byte[] req = new byte[buf.readableBytes()];
-        buf.readBytes(req);
-
-
-        CustomMsg customMsg = new CustomMsg(type,flag,length,body);
+    protected Object decode(ChannelHandlerContext ctx, ByteBuf byteBuf) throws Exception {
+        ByteBuf decode = (ByteBuf) super.decode(ctx, byteBuf);
+        int headId = decode.readInt();
+        Parser parser = MsgMgr.msgMap.get(headId);
+        int canReadBytes = decode.readableBytes();
+        byte[] data = new byte[canReadBytes];
+        decode.readBytes(data);
+        Object o = parser.parseFrom(data);
+        List<Object> list = new ArrayList<>();
+        list.add(headId);
+        list.add(o);
+        return list;
+        //  不想用反射
     }
 }
