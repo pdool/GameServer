@@ -1,7 +1,7 @@
 package com.xin.handler;
 
-import com.google.protobuf.MessageLite;
+import com.google.protobuf.AbstractMessage;
 
-public abstract class AbsHandler<Msg_IN extends MessageLite,Msg_OUT extends MessageLite> {
-    public abstract  Object handle(Msg_IN in,Msg_OUT out);
+public abstract class AbsHandler<Msg_IN extends AbstractMessage,Msg_OUT extends AbstractMessage>  {
+    public abstract  Msg_OUT handle(Msg_IN in);
 }

@@ -1,4 +1,4 @@
-package com.xin;
+package com.xin.core;
 
 import com.google.protobuf.Parser;
 import com.xin.mgr.MsgMgr;

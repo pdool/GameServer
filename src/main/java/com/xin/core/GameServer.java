@@ -1,4 +1,4 @@
-package com.xin;
+package com.xin.core;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

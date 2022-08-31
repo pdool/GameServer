@@ -1,4 +1,4 @@
-package com.xin;
+package com.xin.core;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

@@ -1,4 +1,4 @@
-package com.xin;
+package com.xin.core;
 
 import com.google.protobuf.MessageLite;
 import io.netty.channel.ChannelHandlerContext;
